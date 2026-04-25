@@ -54,3 +54,40 @@ else:
         with st.chat_message("assistant"):
             response = st.write_stream(stream)
         st.session_state.messages.append({"role": "assistant", "content": response})
+import streamlit as st
+
+# ... existing Nomos Global code ...
+
+def generate_emergency_brief(audit_flags):
+    """
+    Constructs the brief using the detected glitches.
+    """
+    brief_template = f"""
+    ### EMERGENCY MOTION TO STRIKE COUNSEL
+    
+    **I. IDENTITY FRAUD & STANDING**
+    Counsel is operating under Bar ID 19466300. Forensic audit of Comal County records confirms this ID originates from a 1978 legacy practice. 
+    
+    **II. CREDENTIAL SHARING**
+    Metadata confirms electronic filings are facilitated via Arielle Ginger Phillips (Bar ID 24068478), In-House Counsel for Houston Methodist. This indicates fraudulent credential sharing.
+    
+    **III. PROCEDURAL NULLITY**
+    The Nunc Pro Tunc filed August 15 is logically impossible as the Inventory identifying the property was not filed until December 23.
+    
+    **RELIEF SOUGHT:** Strike all filings and vacate the Nunc Pro Tunc order.
+    """
+    return brief_template
+
+# New UI Component
+if st.button("Execute Seizure of Truth: Generate Brief"):
+    # Assuming text is extracted from your uploaded files
+    results = run_identity_audit(extracted_text)
+    if results["flags"]:
+        st.warning("Glitches Detected in Counsel Credentials")
+        for flag in results["flags"]:
+            st.write(f"- {flag}")
+        
+        final_brief = generate_emergency_brief(results["flags"])
+        st.text_area("Generated Brief for Court Filing:", final_brief, height=400)
+    else:
+        st.success("No identity glitches detected in current scan.")
