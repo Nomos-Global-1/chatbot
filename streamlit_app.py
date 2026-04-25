@@ -1,4 +1,4 @@
-import streamlit as st
+i8 iimport streamlit as st
 from openai import OpenAI
 
 # Show title and description.
@@ -91,3 +91,25 @@ if st.button("Execute Seizure of Truth: Generate Brief"):
         st.text_area("Generated Brief for Court Filing:", final_brief, height=400)
     else:
         st.success("No identity glitches detected in current scan.")
+if st.sidebar.button("Execute Seizure of Truth"):
+    st.header("Forensic Brief: Emergency Motion to Strike")
+    
+    # Runs the check
+    audit_hits = verify_standing_and_identity(extracted_text, roa_text)
+    
+    if audit_hits:
+        # Chatbot generates the brief using the audit hits as the primary grounds
+        brief = f"""
+        TO THE HONORABLE JUDGE OF SAID COURT:
+        
+        COMES NOW Johnny Ray Vega Jr. and moves to STRIKE counsel of record and VACATE the Nunc Pro Tunc order based on the following:
+        
+        1. **IDENTITY MISREPRESENTATION:** Counsel uses Bar ID 19466300 while presenting a case history (W. Frank Suhr) dating back to 1978 (Exhibit A).
+        2. **CREDENTIAL SHARING:** Filings are facilitated via Arielle Phillips (ID 24068478), In-House Counsel for Houston Methodist, not a member of the local firm.
+        3. **CHRONOLOGICAL IMPOSSIBILITY:** The Nunc Pro Tunc order was filed in August 2025 to fix a clerical error regarding property that was not officially inventoried until December 2025.
+        
+        WHEREFORE, Petitioner prays this Court strike all fraudulent filings.
+        """
+        st.code(brief, language='text')
+    else:
+        st.info("No credential glitches detected in this document scan.")
